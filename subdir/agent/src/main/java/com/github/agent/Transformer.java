@@ -10,8 +10,6 @@ import net.bytebuddy.utility.JavaModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.annotation.Annotation;
-
 /**
  * 转换器
  *
@@ -27,11 +25,12 @@ public class Transformer implements AgentBuilder.Transformer {
         System.out.println(typeDescription);
         System.out.println(classLoader);
         // 方式1
-        // return builder.method(ElementMatchers.isAnnotatedWith(ElementMatchers.nameStartsWith(PRINT)))
-        //         .intercept(MethodDelegation.to(PrintMethodInterceptor.class));
-        // 方式1
         return builder.visit(Advice.to(PrintMethodAdvice.class)
                 .on(ElementMatchers.isAnnotatedWith(ElementMatchers.nameStartsWith(PRINT_CLASS_NAME))));
+        // return builder.method(ElementMatchers.isAnnotatedWith(ElementMatchers.nameStartsWith(PRINT_CLASS_NAME)))
+        //         .intercept(Advice.to(PrintMethodAdvice.class));
+        // return builder.method(ElementMatchers.isAnnotatedWith(ElementMatchers.nameStartsWith(PRINT)))
+        //         .intercept(MethodDelegation.to(PrintMethodInterceptor.class));
         //  方式2
         // Class<?> printClass = null;
         // try {
